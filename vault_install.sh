@@ -37,7 +37,6 @@ cat <<EOF | sudo tee /etc/systemd/system/consul.service
 Description=Consul server agent
 Requires=network-online.target
 After=network-online.target
-
 [Service]
 User=consul
 Group=consul
@@ -53,7 +52,6 @@ KillMode=process
 KillSignal=SIGTERM
 Restart=on-failure
 RestartSec=42s
-
 [Install]
 WantedBy=multi-user.target
 EOF
@@ -88,7 +86,6 @@ After=network-online.target
 ConditionFileNotEmpty=/etc/vault/config.hcl
 StartLimitIntervalSec=60
 StartLimitBurst=3
-
 [Service]
 User=vault
 Group=vault
@@ -113,7 +110,6 @@ StartLimitIntervalSec=60
 StartLimitBurst=3
 LimitNOFILE=65536
 LimitMEMLOCK=infinity
-
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/vault.service
 sudo systemctl enable vault.service
@@ -132,7 +128,5 @@ vault status
 echo "Vault server is initialized and unsealed"
 JNK_PWD=`sudo cat /var/lib/jenkins/secrets/initialAdminPassword`
 export ROOT_TOKEN=`cat unsealkeys.txt | grep -i "Initial Root Token:" | awk '{print $4}'`
-echo "Vault URL http://$HOST:8200 to login"
-echo "Consul URL http://$HOST:8500/ui"
 echo "Token for vault login ====> $ROOT_TOKEN"
 echo "Jenkins initial admin password ====> $JNK_PWD"
